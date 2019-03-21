@@ -39,15 +39,36 @@
     I KNEW IT! Thank you.
 -}
 
-guessIt :: Int -> IO ()
-guessIt 11 = putStrLn "Wait.. I have already guessed everything! Cheater."
-guessIt s = do
-    putStrLn $ "Is your number " ++ show s ++ "? (answer \"yes\" or \"no\") "
-    guess <- getLine
-    if guess == "yes"
-        then putStrLn "I KNEW IT! Thank you."
-        else guessIt (s+1)
+guessIt :: Int -> Int -> Int-> IO ()
+guessIt 12 _ _  = putStrLn "I'm out of tries."
+guessIt s rlower rupper = do
+    putStrLn (show rlower)
+    putStrLn (show rupper)
+    if (rupper-rlower) == 2
+        then do 
+            putStrLn $ "Is your number " ++ show (rlower+1) ++ "? (answer \"yes\" or \"no\") "
+            guess <- getLine
+            if guess == "yes"
+                then putStrLn "Great!"
+            else
+                putStrLn "Oops!"
+    else do
+        putStrLn $ "Is your number greater than " ++ show ((rupper-rlower)`div`2+rlower) ++ "? (answer \"yes\" or \"no\") "
+        guess <- getLine
+        if guess == "yes"
+            then guessIt (s+1) ((rupper-rlower)`div`2+rlower) rupper
+        else guessIt (s+1) rlower ((rupper-rlower)`div`2+rlower)
 
 main = do
-    putStrLn "Think of a number between 1 and 10 and I will guess it."
-    guessIt 1
+    putStrLn "Think of a number between 1 and 1000 and I will guess it."
+    guessIt 1 1 1000
+{-
+ putStrLn $ "Is your number greater than " ++ show ((rupper-rlower)/2+rlower) ++ "? (answer \"yes\" or \"no\") "
+    guess <- getLine
+    if guess == "yes"
+        if (rupper-rlower0) == 2
+            putStrLn $ "Is your number " ++ show (rupper-rlower+1) ++ "? (answer \"yes\" or \"no\") "
+        else
+            then guessIt (s+1) ((rupper-rlower)/2+rlower) rupper
+            else guessIt (s+1) rlower ((rupper-rlower)/2+rlower)
+-}

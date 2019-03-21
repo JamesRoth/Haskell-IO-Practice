@@ -23,7 +23,31 @@
 
 -}
 
-import PTfuncsyntax
+charToPhoneDigit :: Char -> Int
+charToPhoneDigit ch 
+  | elem ch "abcABC" = 2
+  | elem ch "defDEF" = 3
+  | elem ch "ghiGHI" = 4
+  | elem ch "jklJKL" = 5
+  | elem ch "mnoMNO" = 6
+  | elem ch "pqrsPQRS" = 7
+  | elem ch "tuvTUV" = 8
+  | elem ch "wxyzWXYZ" = 9
 
+filterList w = [ x | x <- list, elem (head(x)) (['a'..'z']++['A'..'Z'])]
+  where list = map (:[]) w
 
-main = putStrLn "Put your program here!"
+wordsToPhone' :: String -> Int
+wordsToPhone' [] = 0
+wordsToPhone' w = (charToPhoneDigit (head(head(list)))*10^(length(w)-1)) + wordsToPhone (concat(tail(list)))
+  where list = map (:[]) w
+
+wordsToPhone w = wordsToPhone' (concat(filterList w)) 
+
+filterList' list num1 = [ x | x <- list, (wordsToPhone x) == num1]
+
+main = do
+    putStrLn "Enter a four digit number"
+    num <- readLn
+    dictionary' <- readFile "/usr/share/dict/american-english"
+    putStrLn (show (filterList' (words dictionary') num))
